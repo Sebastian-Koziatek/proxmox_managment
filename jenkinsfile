@@ -1,0 +1,16 @@
+pipeline {
+    // Budowanie na dowlnym agencie
+    agent any
+    // Stages
+    stages {
+        stage('RHEL') {
+            steps {
+                script {
+                    sh '''
+                        bash ./szkolenie_rhel.sh
+                    '''
+                }
+            }
+        }
+    }
+}
