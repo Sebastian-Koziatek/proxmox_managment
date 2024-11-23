@@ -1,14 +1,22 @@
 pipeline {
-    // Budowanie na dowlnym agencie
     agent any
-    // Stages
+    parameters {
+        string(name: 'ACTION', defaultValue: 'on', description: 'Parametr sterujący: on (włączanie) lub off (wyłączanie)')
+    }
     stages {
-        stage('RHEL') {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Run Script') {
             steps {
                 script {
-                    sh '''
-                        bash ./szkolenie_rhel.sh
-                    '''
+                    // Ustawienie praw do wykonywania na skrypcie (na wszelki wypadek)
+                    sh 'chmod +x ./start_stop_machines.sh'
+                    
+                    // Uruchomienie skryptu z parametrem
+                    sh "./start_stop_machines.sh ${params.ACTION}"
                 }
             }
         }
